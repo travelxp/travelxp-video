@@ -1,53 +1,54 @@
-import { useEffect, useRef } from "react";
-import videojs from 'video.js';
+'use client'
+import { useRef, useEffect } from "react";
+import videojs from "video.js";
+import "../videojs/nuevo.min.js";
 
-export const Player = (props) => {
-    const videoRef = useRef(null);
-    const playerRef = useRef(null);
-    const {options, onReady} = props;
-  
-    useEffect(() => {
-  
-      // Make sure Video.js player is only initialized once
-      if (!playerRef.current) {
-        // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode. 
-        const videoElement = document.createElement("video-js");
-  
-        videoElement.classList.add('vjs-big-play-centered');
-        videoRef.current.appendChild(videoElement);
-  
-        const player = playerRef.current = videojs(videoElement, options, () => {
-          videojs.log('player is ready');
-          onReady && onReady(player);
-        });
-  
-      // You could update an existing player in the `else` block here
-      // on prop change, for example:
-      } else {
-        const player = playerRef.current;
-  
-        player.autoplay(options.autoplay);
-        player.src(options.sources);
-      }
-    }, [options, videoRef]);
-  
-    // Dispose the Video.js player when the functional component unmounts
-    useEffect(() => {
-      const player = playerRef.current;
-  
-      return () => {
-        if (player && !player.isDisposed()) {
-          player.dispose();
-          playerRef.current = null;
-        }
-      };
-    }, [playerRef]);
-  
-    return (
-      <div data-vjs-player>
-        <div ref={videoRef} />
+export default function IndexPage() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      // Assign skin name before the player is initialized
+      videojs.skin("shaka");
+
+      // Initialize player
+      const player = videojs(videoRef.current, {
+        fluid: true,
+        poster: "//cdnzone.nuevodevel.com/images/coffee.jpg",
+        sources: [
+          {
+            src: "//cdnzone.nuevodevel.com/video/hls/coffee/playlist.m3u8",
+            type: "application/x-mpegURL"
+          }
+        ]
+      });
+      player.on("ready", function () {
+        console.log("Player ready!");
+      });
+
+      // Initialize Nuevo plugin
+      player.nuevo();
+    }
+  });
+
+  return (
+    <div>
+      <div className="container">
+        <video controls ref={videoRef} className="video-js" />
+        <div className="explain">
+          Please note that Next.js loads all css and javascript asynchronously.
+          For this reason players CSS stylesheet may be loaded slower than
+          javascripts. This means that control bar buttons custom order cannot
+          be set for certain skin when javascripts loaded.
+          <br />
+          <br />
+          To get around this problem you can assign skin name (CSS stylesheet
+          filename) through <i>videojs.skin()</i> function before the player is
+          initialized.
+          <br />
+          <br />
+        </div>
       </div>
-    );
-  }
-  
-  export default Player;
+    </div>
+  );
+}

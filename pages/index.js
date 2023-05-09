@@ -1,43 +1,54 @@
-import { Inter } from 'next/font/google';
-import Player from '@/components/player';
-import { useRef } from 'react';
+'use client'
+import { useRef, useEffect } from "react";
+import videojs from "video.js";
+import "../videojs/nuevo.min.js";
 
-const inter = Inter({ subsets: ['latin'] })
+export default function IndexPage() {
+  const videoRef = useRef(null);
 
-export default function Home() {
+  useEffect(() => {
+    if (videoRef.current) {
+      // Assign skin name before the player is initialized
+      videojs.skin("pinko");
 
-  const playerRef = useRef(null);
+      // Initialize player
+      const player = videojs(videoRef.current, {
+        fluid: true,
+        poster: "//cdnzone.nuevodevel.com/images/coffee.jpg",
+        sources: [
+          {
+            src: "//cdnzone.nuevodevel.com/video/hls/coffee/playlist.m3u8",
+            type: "application/x-mpegURL"
+          }
+        ]
+      });
+      player.on("ready", function () {
+        console.log("Player ready!");
+      });
 
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    sources: [{
-      src: "https://cdn.bitmovin.com/content/assets/art-of-motion-dash-hls-progressive/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-      type: "application/dash+xml"
-    }]
-  };
-
-
-  const handlePlayerReady = (player) => {
-    playerRef.current = player;
-
-    // You can handle player events here, for example:
-    player.on('waiting', () => {
-      videojs.log('player is waiting');
-    });
-
-    player.on('dispose', () => {
-      videojs.log('player will dispose');
-    });
-  };
+      // Initialize Nuevo plugin
+      player.nuevo();
+    }
+  });
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <Player options={videoJsOptions} onReady={handlePlayerReady} />
-    </main>
-  )
+    <div>
+      <div className="container">
+        <video controls ref={videoRef} className="video-js" />
+        <div className="explain">
+          Please note that Next.js loads all css and javascript asynchronously.
+          For this reason players CSS stylesheet may be loaded slower than
+          javascripts. This means that control bar buttons custom order cannot
+          be set for certain skin when javascripts loaded.
+          <br />
+          <br />
+          To get around this problem you can assign skin name (CSS stylesheet
+          filename) through <i>videojs.skin()</i> function before the player is
+          initialized.
+          <br />
+          <br />
+        </div>
+      </div>
+    </div>
+  );
 }
