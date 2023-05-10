@@ -1,12 +1,13 @@
-'use client'
 import { useRef, useEffect } from "react";
 import videojs from "video.js";
-import "../videojs/nuevo.min.js";
+// import "../videojs/nuevo.min.js";
 
-export default function IndexPage() {
+
+export default function MyPlayer() {
   const videoRef = useRef(null);
 
   useEffect(() => {
+    require("../videojs/nuevo.min.js");
     if (videoRef.current) {
       // Assign skin name before the player is initialized
       videojs.skin("shaka");

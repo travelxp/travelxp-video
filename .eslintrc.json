@@ -1,3 +1,7 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["eslint:recommended", "next"],
+  "rules": {
+     "import/no-unused-modules": [1, {"unusedExports": true, "ignoreExports": ["./pages/**"]}],
+      "@next/next/no-img-element": "off"
+  }
 }
