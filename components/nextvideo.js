@@ -23,11 +23,17 @@ export default function NextVideo(props) {
     }, [])
 
     useEffect(() => {
-        require('../videojs/nuevo.min.js')
+        require('../videojs/plugins/nuevo-dash.js');
+        require('../videojs/nuevo.min.js');
+
+        //require('../videojs/plugins/videojs-chromecast.min.js');
+        require('../videojs/plugins/videojs.events.js');
+
         if (videoEl == null) return
         
         const player = videojs(videoEl, PlayerProps)
         player.nuevo();
+        // player.chromecast();
         return () => {
             player.dispose()
         }
