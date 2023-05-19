@@ -3,17 +3,21 @@ import { useCallback, useEffect, useState } from 'react'
 import videojs from 'video.js'
 
 
-const PlayerProps = {
+
+const videoSource = {
     techOrder: ['html5'],
     autoplay: true,
     controls: true,
     sources: [
         {
-            src: "https://cdn.bitmovin.com/content/assets/art-of-motion-dash-hls-progressive/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+            src: "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/manifest_v1.mpd",
             type: "application/dash+xml"
         }
-    ]
+    ],
+    vttbasepath : "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/",
+    vttsrc : "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/sprite.vtt"
 }
+
 
 export default function NextVideo(props) {
     const [videoEl, setVideoEl] = useState(null)
@@ -23,19 +27,33 @@ export default function NextVideo(props) {
     }, [])
 
     useEffect(() => {
-        require('../videojs/plugins/nuevo-dash.js');
-        require('../videojs/nuevo.min.js');
-        require('../videojs/plugins/videojs.events.js');
-        // require('../videojs/plugins/videojs.hotkeys.min.js');
-        // require('../videojs/plugins/videojs.thumbnails.js');
-        //require('../videojs/plugins/videojs-chromecast.min.js');
-
 
         if (videoEl == null) return
-
-        const player = videojs(videoEl, PlayerProps)
-        player.nuevo({ title: "video title", id: "video id" });
-
+        require('../videojs/plugins/nuevo-dash');
+        require('../videojs/nuevo.min.js');
+        require('../videojs/plugins/videojs.events');
+        // require('../videojs/plugins/videojs.hotkeys.min.js');
+        require('../videojs/plugins/videojs.thumbnails.js');
+        //require('../videojs/plugins/videojs-chromecast.min.js');
+        const player = videojs(videoEl, videoSource)
+        player.nuevo({ title: "video title", video_id: "video id", contextMenu: false ,
+        // slideImage : "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/sprite_0.png",
+        // slideType: 'horizontal', //optional
+        // slideWidth: 160, //optional
+        // slideHeight: 90, //optional
+        // ghostThumb : true
+        });
+        
+          player.thumbnails({basePath:videoSource.vttbasepath ,src : videoSource.vttsrc});
+          // Load VTT file on Nuevo plugin ready event
+        //   player.on('ready', function () {
+        //     let track = [{ kind: 'metadata', src: videoSource1.vttsrc }];
+        //     player.textTracks(track);
+         
+        //   });  
+         
+         
+       
         // Initialize Events plugin
 
         player.events({ analytics: true });
@@ -67,6 +85,7 @@ export default function NextVideo(props) {
 
         // player.chromecast();
         return () => {
+
             player.dispose()
         }
     }, [props, videoEl])
@@ -75,7 +94,7 @@ export default function NextVideo(props) {
         <>
             <h1>The implementation below is using react functions</h1>
             <div data-vjs-player>
-                <video ref={onVideo} className="video-js" playsInline />
+                <video ref={onVideo} className="video-js vjs-fluid" playsInline />
             </div>
         </>
     )
