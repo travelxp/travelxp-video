@@ -1,0 +1,59 @@
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  development:
+    name: Deploy to development
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for development
+        run: npm run build:dev
+
+      - name: Create application zip
+        run: zip -r application.zip .
+
+      - name: Configure AWS credentials
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          APPLICATION_NAME: ${{ secrets.APPLICATION_NAME }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          DEPLOYMENT_GROUP: ${{ secrets.DEPLOYMENT_GROUP }}
+          BITBUCKET_BUILD_NUMBER: ${{ github.run_number }}
+        run: |
+          export VERSION=$(jq -r '.version' package.json)
+          echo $VERSION
+
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@v1
+        with:
+          args: --acl public-read
+          source: application.zip
+          dest: s3://${{ secrets.S3_BUCKET }}/${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip
+
+      - name: Deploy to development
+        uses: aws-actions/aws-codedeploy@v1
+        with:
+          deployment-group: ${{ secrets.DEPLOYMENT_GROUP }}
+          region: ${{ secrets.AWS_DEFAULT_REGION }}
+          wait-until-deployed: true
+          file-exists-behavior: OVERWRITE
+          ignore-application-stop-failures: true
+          version-label: ${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION
