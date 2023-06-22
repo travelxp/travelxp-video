@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html/cmsapi.travelxp.com
+    destination: /var/www/html/travelxp.video
     overwrite: true
 permissions:
-  - object: /var/www/html/cmsapi.travelxp.com/codedeploy
+  - object: /var/www/html/travelxp.video/codedeploy
     pattern: "*.sh"
     owner: root
     group: root
