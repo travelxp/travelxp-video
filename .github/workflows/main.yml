@@ -46,7 +46,7 @@ jobs:
         run: |
          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
          unzip awscliv2.zip
-         sudo ./aws/install
+         sudo ./aws/install --update
       
       - name: Upload to S3
         run: aws s3 cp application.zip s3://${{ secrets.S3_BUCKET }}/${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip --acl public-read
