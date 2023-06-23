@@ -55,7 +55,8 @@ jobs:
         run: aws s3 cp application.zip s3://${{ secrets.S3_BUCKET }}/${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip --acl public-read
 
       - name: Deploy with AWS CodeDeploy
-        run: aws deploy create-deployment --application-name ${{ secrets.APPLICATION_NAME }} --deployment-group-name ${{ secrets.DEPLOYMENT_GROUP }} --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip --ignore-application-stop-failures --region ${{ secrets.AWS_DEFAULT_REGION }}
+        run: aws deploy create-deployment --application-name ${{ secrets.APPLICATION_NAME }} --deployment-group-name ${{ secrets.DEPLOYMENT_GROUP }} --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-${{ steps.set-version.outputs.version }}/application.zip --ignore-application-stop-failures --region ${{ secrets.AWS_DEFAULT_REGION }}
+
       
 
       
