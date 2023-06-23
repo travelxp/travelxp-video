@@ -43,14 +43,14 @@ jobs:
           echo $VERSION
 
       - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@v1
+        uses: jakejarvis/s3-sync-action@v3
         with:
           args: --acl public-read
           source: application.zip
           dest: s3://${{ secrets.S3_BUCKET }}/${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip
 
       - name: Deploy to development
-        uses: aws-actions/aws-codedeploy@v1
+        uses: aws-actions/aws-codedeploy@v2
         with:
           deployment-group: ${{ secrets.DEPLOYMENT_GROUP }}
           region: ${{ secrets.AWS_DEFAULT_REGION }}
