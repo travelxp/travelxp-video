@@ -69,7 +69,7 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
           aws deploy create-deployment \
-            --application-name travelxp.video \
+            --application-name travelxp-video \
             --deployment-group-name travelxp-video-Deployment-group \
             --s3-location "bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip" \
             --ignore-application-stop-failures \
