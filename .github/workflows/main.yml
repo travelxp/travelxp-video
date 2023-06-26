@@ -57,8 +57,8 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
           aws deploy create-deployment \
-            --application-name ${{ secrets.APPLICATION_NAME }} \
-            --deployment-group-name ${{ secrets.DEPLOYMENT_GROUP }} \
+            --application-name ${{ vars.APPLICATION_NAME }} \
+            --deployment-group-name ${{ vars.DEPLOYMENT_GROUP }} \
             --s3-location "bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=${{ github.run_number }}-${{ secrets.APPLICATION_NAME }}-$VERSION/application.zip" \
             --ignore-application-stop-failures \
             --region ${{ secrets.AWS_DEFAULT_REGION }}
