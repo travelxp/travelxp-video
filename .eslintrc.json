@@ -1,7 +1,7 @@
 {
   "extends": ["eslint:recommended", "next"],
   "rules": {
-     "import/no-unused-modules": [1, {"unusedExports": true, "ignoreExports": ["./pages/**", "./app/**"]}],
+     "import/no-unused-modules": [1, {"unusedExports": true, "ignoreExports": ["./app/**"]}],
       "@next/next/no-img-element": "off"
   }
 }

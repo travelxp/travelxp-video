@@ -11,8 +11,8 @@ export default function NextDemo() {
       console.log(videojs)
       // videojs.skin("shaka");
      
-       require('../videojs/nuevo.min.js');
-      require('../videojs/plugins/videojs.events');
+       require('../../videojs/nuevo.min.js');
+      require('../../videojs/plugins/videojs.events.js');
       //require('../videojs/plugins/videojs.thumbnails.js');
       // Initialize player
       const player = videojs(videoRef.current, {
