@@ -1,4 +1,5 @@
 /* eslint-disable import/no-unused-modules */
+"use client"
 import { useCallback, useEffect, useState } from 'react';
 import videojs from 'video.js';
 
@@ -34,8 +35,8 @@ export default function NextVideo(props) {
         require('../videojs/plugins/nuevo-dash');
         require('../videojs/nuevo.min.js');
         require('../videojs/plugins/videojs.events');
-        require('../videojs/plugins/videojs.thumbnails.js');
-        require('../videojs/plugins/videojs.hotkeys.min.js');
+        // require('../videojs/plugins/videojs.thumbnails.js');
+        // require('../videojs/plugins/videojs.hotkeys.min.js');
         
         //require('../videojs/plugins/videojs.thumbnails.js');
         //require('../videojs/plugins/videojs-chromecast.min.js');
@@ -57,7 +58,7 @@ export default function NextVideo(props) {
             // player.textTracks(track);
         });
 
-        player.thumbnails({ basePath: videoSource.vttbasepath, src: videoSource.vttsrc });
+        // player.thumbnails({ basePath: videoSource.vttbasepath, src: videoSource.vttsrc });
         // Initialize Events plugin
         player.events({ analytics: true });
 
