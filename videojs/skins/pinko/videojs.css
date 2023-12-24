@@ -1446,26 +1446,6 @@ body.vjs-full-window {
 	content:"";
 	height:80px;
 }
-.video-js .vjs-volume-level {
-	position: absolute;
-    bottom: 0;
-    background-color: rgb(255, 0, 115);
-	width:6px;
-	height:100%;
-}
-.video-js .vjs-volume-level:before {
-	background: rgb(255, 0, 115);
-    -webkit-border-radius: 50%;
-	border-radius: 50%;
-    content: '';
-    height: 12px;
-    position: absolute;
-    right: -3px;
-    top: -6px;
-    width: 12px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.66);
-    -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.66);
-}
 .video-js .vjs-volume-panel .vjs-volume-vertical {
   width: 30px;
   left:5px;

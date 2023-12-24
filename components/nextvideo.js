@@ -45,11 +45,11 @@ export default function NextVideo(props) {
 
         player.nuevo({
             title: "video title", video_id: "video id", contextMenu: false,
-            // slideImage : "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/sprite_0.png",
-            // slideType: 'horizontal', //optional
-            // slideWidth: 160, //optional
-            // slideHeight: 90, //optional
-            // ghostThumb : true
+            slideImage : "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/sprite_0.png",
+            slideType: 'horizontal', //optional
+            slideWidth: 160, //optional
+            slideHeight: 90, //optional
+            ghostThumb : true
         });
 
         
