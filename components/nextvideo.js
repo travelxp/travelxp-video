@@ -2,6 +2,8 @@
 "use client"
 import { useCallback, useEffect, useState } from 'react';
 import videojs from 'video.js';
+import "../videojs/plugins/videojs-contrib-eme.min.js";
+import Hotkeys from "../videojs/plugins/videojs.hotkeys.min.js";
 
 const videoSource = {
     techOrder: ['html5'],
@@ -35,11 +37,11 @@ export default function NextVideo(props) {
         require('../videojs/plugins/nuevo-dash');
         require('../videojs/nuevo.min.js');
         require('../videojs/plugins/videojs.events');
-        // require('../videojs/plugins/videojs.thumbnails.js');
-        // require('../videojs/plugins/videojs.hotkeys.min.js');
+        require('../videojs/plugins/videojs.thumbnails.js');
+        videojs.registerPlugin("hotkeys", Hotkeys);
         
-        //require('../videojs/plugins/videojs.thumbnails.js');
-        //require('../videojs/plugins/videojs-chromecast.min.js');
+        require('../videojs/plugins/videojs.thumbnails.js');
+        // require('../videojs/plugins/videojs-chromecast.min.js');
 
         player.nuevo({
             title: "video title", video_id: "video id", contextMenu: false,
@@ -54,11 +56,11 @@ export default function NextVideo(props) {
         // Load VTT file on Nuevo plugin ready event
         player.on('ready', function () {
             
-            // let track = [{ kind: 'metadata', src: videoSource.vttsrc }];
-            // player.textTracks(track);
+            let track = [{ kind: 'metadata', src: videoSource.vttsrc }];
+            player.textTracks(track);
         });
 
-        // player.thumbnails({ basePath: videoSource.vttbasepath, src: videoSource.vttsrc });
+        player.thumbnails({ basePath: videoSource.vttbasepath, src: videoSource.vttsrc });
         // Initialize Events plugin
         player.events({ analytics: true });
 

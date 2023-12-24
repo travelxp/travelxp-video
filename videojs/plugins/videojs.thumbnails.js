@@ -1,6 +1,360 @@
 /**
- * @license
- * Copyright (c) 2023 The Nuevodevel Team. All rights reserved.
- * Thumbnails Plugin for Video.js v8
+ * Copyright (c) 2022 The Nuevodevel Team. All rights reserved.
+ * VTTThumbnails Plugin Video.js 8
  */
-!function(){var e={align:"vertical",timeTooltip:!0,width:160,height:90,basePath:"",src:""},t=function(){var e,r,s,o,n;for(s in r=(e=Array.prototype.slice.call(arguments)).shift()||{},e)for(n in o=e[s])o.hasOwnProperty(n)&&("object"==typeof o[n]?r[n]=t(r[n],o[n]):r[n]=o[n]);return r},r=function(t){var r,s,o;if(-1===(s=t.indexOf("#")))return{src:t,w:0,h:0,x:0,y:0};if(r=t.substring(0,s),"xywh="!==(o=t.substring(s+1)).substring(0,5))return{src:e.basePath+r,w:0,h:0,x:0,y:0};var n=o.substring(5).split(",");return{src:e.basePath+r,w:parseInt(n[2]),h:parseInt(n[3]),x:parseInt(n[0]),y:parseInt(n[1])}};videojs.registerPlugin("thumbnails",function(s){var o,n,d,a,l,h,v,u,c,m,p,f,g;function w(e){const t=function(e){const t=e.split("."),r=t[0].split(":");return{milliseconds:parseInt(t[1],10)||0,seconds:parseInt(r.pop(),10)||0,minutes:parseInt(r.pop(),10)||0,hours:parseInt(r.pop(),10)||0}}(e);return parseInt(3600*t.hours+60*t.minutes+t.seconds+t.milliseconds/1e3,10)}function y(e){fetch(e).then(e=>e.text()).then(e=>{if(e.length>0){var t=function(e){var t=[];return e.split(/[\r\n][\r\n]/i).forEach(function(e){if(e.match(/([0-9]{2}:)?([0-9]{2}:)?[0-9]{2}(.[0-9]{3})?( ?--> ?)([0-9]{2}:)?([0-9]{2}:)?[0-9]{2}(.[0-9]{3})?[\r\n]{1}.*/gi)){const r=e.split(/[\r\n]/i),s=r[0].split(/ ?--> ?/i),o=s[0],n=s[1],i=r[1];t.push({startTime:w(o),endTime:w(n),text:i})}}),t}(e);t.length>0&&(g=t,j())}})}function j(){((o=document.createElement("div")).className="vjs-thumbnail-holder",tooltip=document.createElement("div"),tooltip.className="vjs-thumb-tooltip",(d=document.createElement("img")).className="vjs-thumb-image",o.appendChild(d),o.appendChild(tooltip),v.el().appendChild(o),a.shadowSlide)&&(a.el_.querySelector(".vjs-thumb-poster")||((h=document.createElement("div")).className="vjs-thumb-poster",l=document.createElement("canvas"),h.appendChild(l),a.el_.insertBefore(h,a.el_.querySelector(".vjs-poster"))));c=a.duration(),a.on("durationchange",function(e){c=a.duration()}),a.on("loadedmetadata",function(e){c=a.duration()});var e=v.el_.querySelector(".vjs-play-progress").querySelector(".vjs-time-tooltip");e&&videojs.dom.addClass(e,"vjs-abs-hidden"),mtp=v.el().querySelector(".vjs-mouse-display"),mtp&&(mtp.style.opacity=0);var t=!1,r=Object.defineProperty({},"passive",{get:function(){return t=!0,!0}});window.addEventListener("testPassive",null,r),window.removeEventListener("testPassive",null,r),u.addEventListener("mousemove",m),u.addEventListener("mouseleave",p),u.addEventListener("mousedown",E),u.addEventListener("touchstart",S,!!t&&{passive:!1})}function b(){o.classList.remove("vjs-thumb-show"),a.shadowSlide&&(h.removeAttribute("style"),l.width=0,l.height=0)}function x(){videojs.holderdown=!1,document.removeEventListener("mousemove",m),document.removeEventListener("mouseup",x),b()}function E(e){videojs.holderdown=!0,document.addEventListener("mousemove",m),document.addEventListener("mouseup",x),m(e)}function L(){u.removeEventListener("touchmove",m),u.removeEventListener("touchend",L),b()}function S(e){videojs.holderdown=!1,m(e),u.addEventListener("touchmove",m),u.addEventListener("touchend",L)}e.basePath="",n=t({},e,s),a=this,s&&(s.basePath&&(e.basePath=s.basePath),s.width&&s.height&&(e.width=s.width,e.height=s.height),s.src&&a.on("ready",function(){a.trigger("medialoaded",{xml:s.src})})),a.on("medialoaded",function(e,t){g=[],v=a.controlBar.progressControl,(u=a.el_.querySelector(".vjs-progress-holder")).removeEventListener("touchstart",S),u.removeEventListener("mousemove",m),u.removeEventListener("mouseleave",p),u.removeEventListener("mousedown",E),a.sprite=!1;var s=a.el_.querySelector(".vjs-thumb-tooltip");s&&s.parentNode.removeChild(s);var n=a.el_.querySelector(".vjs-thumb-image");n&&n.parentNode.removeChild(n);var i=a.el_.querySelector(".vjs-thumbnail-holder");if(i&&i.parentNode.removeChild(i),t&&t.xml)y(t.xml);else{v=a.controlBar.progressControl,u=a.el_.querySelector(".vjs-progress-holder");var d=a.textTracks().length;if(0===d)return void(o&&videojs.dom.addClass("div","vjs-hidden"));var l=!1;for(c=0;c<d;){if("metadata"===a.textTracks()[c].kind){if(void 0===(f=a.textTracks()[c]).src)return;if(f.src)return void y(f.src);if(f.mode="hidden",l=!0,(f=a.textTracks()[c]).mode="showing",null==f.cues)return void(f.mode="hidden");var h=f&&f.cues.length;break}c++}if(1!=l)return void(o&&videojs.dom.addClass("div","vjs-hidden"));if((h=(f=a.textTracks()[c])&&f.cues.length)<1)return;var c=0;for(a.sprite=!0;c<h;){var w=f.cues[c];ctt=r(w.text),c++}g=f&&f.cues,j()}}),p=function(e){!0!==videojs.holderdown&&o.classList.remove("vjs-thumb-show")},m=function(e){e.preventDefault(),c=a.duration();var t=v.el().querySelector(".vjs-progress-holder"),s=v.el().querySelector(".vjs-play-progress"),u=t.getBoundingClientRect(),m=null;e.pageX?m=e.pageX:e.changedTouches&&(m=e.changedTouches[0].pageX||e.touches[0].clientX);var p=m-u.left;if(0==p&&videojs.holderdown&&s.offsetWidth,p<0&&(p=0),p>t.offsetWidth&&(p=t.offsetWidth),n.timeTooltip){var f=p/t.offsetWidth*c,w=o.querySelector(".vjs-thumb-tooltip");w&&(w.innerHTML=function(e,t){e=e<0?0:e;let r=Math.floor(e%60),s=Math.floor(e/60%60),o=Math.floor(e/3600);const n=Math.floor(t/60%60),i=Math.floor(t/3600);return(isNaN(e)||e===1/0)&&(o=s=r="-"),(o=o>0||i>0?o+":":"")+(s=((o||n>=10)&&s<10?"0"+s:s)+":")+(r=r<10?"0"+r:r)}(f,c))}var y=g.length;i=0;for(var j=!1;i<y;){var b=g[i];if(b.startTime<=f&&b.endTime>=f){j=!0,vtt=r(b.text);break}i++}if(1==j){o.classList.remove("vjs-thumb-hidden"),d.src.indexOf(vtt.src)<0&&(d.src=vtt.src),0===vtt.w&&(vtt.w=n.width,d.style.width=vtt.w+"px"),0===vtt.h&&(vtt.h=n.height,d.style.height=vtt.h+"px"),o.style.width==vtt.w&&o.style.height==vtt.h||(o.style.width=vtt.w+"px",o.style.height=vtt.h+"px"),d.style.left=-vtt.x+"px",d.style.top=-vtt.y+"px";var x=vtt.w,E=x/2,L=v.el().offsetWidth,S=a.el_.querySelector(".vjs-progress-holder").offsetLeft,q=E-S;if(p+E+S>L?p=L-x:p<q?p=0:p-=q,o.style.left=parseInt(p)+"px",o.classList.add("vjs-thumb-show"),videojs.holderdown&&a.shadowSlide){a.el_.querySelector(".vjs-thumb-poster")||((h=document.createElement("div")).className="vjs-thumb-poster",l=document.createElement("canvas"),h.appendChild(l),a.el_.insertBefore(h,a.el_.querySelector(".vjs-poster")));var C=l.getContext("2d");l.width=a.el_.offsetWidth,l.height=a.el_.offsetHeight,h.style.width=l.width+"px",h.style.height=l.height+"px",C.clearRect(0,0,l.width,l.height),C.drawImage(d,vtt.x,vtt.y,vtt.w,vtt.h,0,0,l.width,l.height)}}else o.classList.add("vjs-thumb-hidden")}})}();
+/*eslint no-inner-declarations: "off"*/ import videojs from "video.js";
+const defaults = { width: 160, height: 90, timeTooltip: !0, basePath: "", src: "", responsive: !1, mediaqueries: { tiny: 0.5, small: 0.75, medium: 1, large: 1.25, xlarge: 1.5 } },
+  onPlayerReady = (e, t) => {
+    defaults.basePath = "";
+    var i, s, r, o, n, a, d, l, h, u, v, c, f, m;
+    if (t) {
+      if (t.basePath) defaults.basePath = t.basePath;
+      if (t.width && t.height) {
+        defaults.width = t.width;
+        defaults.height = t.height;
+      }
+      if (t.src)
+        e.on("ready", function () {
+          e.trigger("medialoaded", { xml: t.src });
+        });
+    }
+    r = t;
+    function p(e) {
+      var t, i, s;
+      i = e.indexOf("#");
+      if (-1 === i) return { src: e, w: 0, h: 0, x: 0, y: 0 };
+      t = e.substring(0, i);
+      s = e.substring(i + 1);
+      if ("xywh=" !== s.substring(0, 5)) return { src: defaults.basePath + t, w: 0, h: 0, x: 0, y: 0 };
+      var r = s.substring(5).split(",");
+      return { src: defaults.basePath + t, w: parseInt(r[2], 10), h: parseInt(r[3], 10), x: parseInt(r[0], 10), y: parseInt(r[1], 10) };
+    }
+    function g(e) {
+      const t = e.split("."),
+        i = t[0],
+        s = i.split(":");
+      return { milliseconds: parseInt(t[1], 10) || 0, seconds: parseInt(s.pop(), 10) || 0, minutes: parseInt(s.pop(), 10) || 0, hours: parseInt(s.pop(), 10) || 0 };
+    }
+    function y(e) {
+      const t = g(e);
+      return parseInt(3600 * t.hours + 60 * t.minutes + t.seconds + t.milliseconds / 1e3, 10);
+    }
+    function w(e) {
+      fetch(e)
+        .then((e) => e.text())
+        .then((e) => {
+          if (e.length > 0) {
+            var t = j(e);
+            if (t.length > 0) {
+              m = t;
+              b();
+            }
+          }
+        });
+    }
+    function j(e) {
+      var t = [],
+        i = e.split(/[\r\n][\r\n]/i);
+      i.forEach(function (e) {
+        if (e.match(/([0-9]{2}:)?([0-9]{2}:)?[0-9]{2}(.[0-9]{3})?( ?--> ?)([0-9]{2}:)?([0-9]{2}:)?[0-9]{2}(.[0-9]{3})?[\r\n]{1}.*/gi)) {
+          const i = e.split(/[\r\n]/i),
+            s = i[0],
+            r = s.split(/ ?--> ?/i),
+            o = r[0],
+            n = r[1],
+            a = i[1];
+          t.push({ startTime: y(o), endTime: y(n), text: a });
+        }
+      });
+      return t;
+    }
+    e.on("medialoaded", function (t, s) {
+      m = [];
+      d = e.controlBar.progressControl;
+      l = e.el_.querySelector(".vjs-progress-holder");
+      l.removeEventListener("touchstart", C);
+      l.removeEventListener("mousemove", u);
+      l.removeEventListener("mouseleave", c);
+      l.removeEventListener("mousedown", S);
+      e.sprite = !1;
+      var o = e.el_.querySelector(".vtt_canvas");
+      if (o) o.parentNode.removeChild(o);
+      var n = e.el_.querySelector(".vjs-thumb-tooltip");
+      if (n) n.parentNode.removeChild(n);
+      var a = e.el_.querySelector(".vjs-thumb-image");
+      if (a) a.parentNode.removeChild(a);
+      var h = e.el_.querySelector(".vjs-thumbnail-holder");
+      if (h) h.parentNode.removeChild(h);
+      if (s && s.xml) {
+        if (r.debug) console.log("data from xml");
+        w(s.xml);
+      } else {
+        d = e.controlBar.progressControl;
+        l = e.el_.querySelector(".vjs-progress-holder");
+        var v = e.textTracks().length;
+        if (0 === v) {
+          if (i) videojs.dom.addClass("div", "vjs-hidden");
+          return;
+        }
+        for (var p = !1, g = 0; g < v; ) {
+          if ("metadata" === e.textTracks()[g].kind) {
+            f = e.textTracks()[g];
+            if (void 0 === f.src) return;
+            if (f.src) {
+              if (r.debug) console.log("data from track");
+              w(f.src);
+              return;
+            }
+            f.mode = "hidden";
+            f = e.textTracks()[g];
+            p = !0;
+            f.mode = "showing";
+            if (null == f.cues) {
+              f.mode = "hidden";
+              return;
+            }
+            var y = f && f.cues.length;
+            break;
+          }
+          g++;
+        }
+        if (!0 !== p) {
+          if (i) videojs.dom.addClass("div", "vjs-hidden");
+          return;
+        }
+        f = e.textTracks()[g];
+        y = f && f.cues.length;
+        if (y < 1) return;
+        g = 0;
+        e.sprite = !0;
+        m = f && f.cues;
+        b();
+      }
+    });
+    function b() {
+      i = document.createElement("div");
+      i.className = "vjs-thumbnail-holder";
+      o = document.createElement("canvas");
+      o.className = "vtt_canvas";
+      o.style.position = "absolute";
+      o.style.left = "0";
+      o.style.top = "0";
+      i.appendChild(o);
+      v = document.createElement("div");
+      v.className = "vjs-thumb-tooltip";
+      s = document.createElement("img");
+      s.className = "vjs-thumb-image";
+      s.style.visibility = "hidden";
+      s.style.left = "-500px";
+      s.style.top = "-500px";
+      document.body.appendChild(s);
+      i.appendChild(v);
+      d.el().appendChild(i);
+      if (e.shadowSlide) {
+        var t = e.el_.querySelector(".vjs-thumb-poster");
+        if (!t) {
+          a = document.createElement("div");
+          a.className = "vjs-thumb-poster";
+          n = document.createElement("canvas");
+          a.appendChild(n);
+          e.el_.insertBefore(a, e.el_.querySelector(".vjs-poster"));
+        }
+      }
+      h = e.duration();
+      e.on("durationchange", function (t) {
+        h = e.duration();
+      });
+      e.on("loadedmetadata", function (t) {
+        h = e.duration();
+      });
+      var r = d.el_.querySelector(".vjs-play-progress"),
+        f = r.querySelector(".vjs-time-tooltip");
+      if (f) videojs.dom.addClass(f, "vjs-abs-hidden");
+      var m = d.el().querySelector(".vjs-mouse-display");
+      if (m) m.style.opacity = 0;
+      var p = !1,
+        g = Object.defineProperty({}, "passive", {
+          get: function () {
+            p = !0;
+            return !0;
+          },
+        });
+      window.addEventListener("testPassive", null, g);
+      window.removeEventListener("testPassive", null, g);
+      l.addEventListener("mousemove", u);
+      l.addEventListener("mouseleave", c);
+      l.addEventListener("mousedown", S);
+      l.addEventListener("touchstart", C, p ? { passive: !1 } : !1);
+    }
+    function x(e, t) {
+      e = e < 0 ? 0 : e;
+      let i = Math.floor(e % 60),
+        s = Math.floor((e / 60) % 60),
+        r = Math.floor(e / 3600);
+      const o = Math.floor((t / 60) % 60),
+        n = Math.floor(t / 3600);
+      if (isNaN(e) || e === 1 / 0) r = s = i = "-";
+      r = r > 0 || n > 0 ? r + ":" : "";
+      s = ((r || o >= 10) && s < 10 ? "0" + s : s) + ":";
+      i = i < 10 ? "0" + i : i;
+      return r + s + i;
+    }
+    function E() {
+      L(!1);
+      i.classList.remove("vjs-thumb-show");
+      if (e.shadowSlide) {
+        a.removeAttribute("style");
+        n.width = 0;
+        n.height = 0;
+      }
+    }
+    function L(e) {
+      if (e) d.el().setAttribute("style", "z-index:22");
+      else d.el().removeAttribute("style");
+    }
+    c = function (e) {
+      if (!0 !== videojs.holderdown) {
+        L(!1);
+        i.classList.remove("vjs-thumb-show");
+      }
+    };
+    function q() {
+      videojs.holderdown = !1;
+      document.removeEventListener("mousemove", u);
+      document.removeEventListener("mouseup", q);
+      E();
+    }
+    function S(e) {
+      videojs.holderdown = !0;
+      L(!0);
+      document.addEventListener("mousemove", u);
+      document.addEventListener("mouseup", q);
+      u(e);
+    }
+    function _() {
+      l.removeEventListener("touchmove", u);
+      l.removeEventListener("touchend", _);
+      E();
+    }
+    function C(e) {
+      videojs.holderdown = !1;
+      u(e);
+      l.addEventListener("touchmove", u);
+      l.addEventListener("touchend", _);
+    }
+    o = null;
+    u = function (t) {
+      L(!0);
+      t.preventDefault();
+      h = e.duration();
+      var l = d.el().querySelector(".vjs-progress-holder"),
+        u = d.el().querySelector(".vjs-play-progress"),
+        v = l.getBoundingClientRect(),
+        c = null;
+      if (t.pageX) c = t.pageX;
+      else if (t.changedTouches) c = t.changedTouches[0].pageX || t.touches[0].clientX;
+      var f = c - v.left;
+      if (0 === f && videojs.holderdown && u.offsetWidth > 0);
+      if (f < 0) f = 0;
+      if (f > l.offsetWidth) f = l.offsetWidth;
+      if (r.timeTooltip) {
+        var g = f / l.offsetWidth,
+          y = g * h,
+          w = i.querySelector(".vjs-thumb-tooltip");
+        if (w) w.innerHTML = x(y, h);
+      }
+      for (var j = m.length, b = 0, E = !1; b < j; ) {
+        var q = m[b];
+        if (q.startTime <= y && q.endTime >= y) {
+          E = !0;
+          var S = p(q.text);
+          break;
+        }
+        b++;
+      }
+      S.iw = S.w;
+      S.ih = S.h;
+      if (!0 === E) {
+        i.classList.remove("vjs-hidden");
+        var _ = !1,
+          C = S.src.replace(/\.\.\//g, "");
+        if (s.src.indexOf(C) < 0) {
+          s.src = S.src;
+          _ = !0;
+        }
+        if (0 === S.w) {
+          S.w = r.width;
+          s.style.width = S.w + "px";
+        }
+        if (0 === S.h) {
+          S.h = r.height;
+          s.style.height = S.h + "px";
+        }
+        var P = 1;
+        if (r.responsive && r.mediaqueries) {
+          var I = e.el_.offsetWidth;
+          if (I <= 320) P = r.mediaqueries.tiny;
+          if (I > 320 && I <= 540) P = r.mediaqueries.small;
+          if (I > 540 && I <= 1080) P = r.mediaqueries.medium;
+          if (I > 1080 && I <= 1600) P = r.mediaqueries.large;
+          if (I > 1600) P = r.mediaqueries.xlarge;
+        }
+        var T = S.w * P,
+          N = S.h * P;
+        if (o.width < 1);
+        if (i.style.width !== T || i.style.height !== N) {
+          i.style.width = T + "px";
+          i.style.height = N + "px";
+        }
+        var k = o.getContext("2d");
+        if (_)
+          s.onload = function () {
+            o.width = T;
+            o.height = N;
+            S.x = 0;
+            S.y = 0;
+            k.drawImage(s, S.x, S.y, S.w, S.h, 0, 0, o.width, o.height);
+          };
+        else if (S.iw > 0 && S.ih > 0) {
+          o.width = T;
+          o.height = N;
+          k.drawImage(s, S.x, S.y, S.w, S.h, 0, 0, o.width, o.height);
+        }
+        var W = T / 2,
+          M = d.el().offsetWidth,
+          B = e.el_.querySelector(".vjs-progress-holder").offsetLeft,
+          R = W - B;
+        if (f + W + B > M) f = M - T;
+        else if (f < R) f = 0;
+        else f -= R;
+        i.style.left = parseInt(f, 10) + "px";
+        i.classList.add("vjs-thumb-show");
+        if (videojs.holderdown && e.shadowSlide) {
+          var O = e.el_.querySelector(".vjs-thumb-poster");
+          if (!O) {
+            a = document.createElement("div");
+            a.className = "vjs-thumb-poster";
+            n = document.createElement("canvas");
+            a.appendChild(n);
+            e.el_.insertBefore(a, e.el_.querySelector(".vjs-poster"));
+          }
+          var X = n.getContext("2d");
+          n.width = e.el_.offsetWidth;
+          n.height = e.el_.offsetHeight;
+          a.style.width = n.width + "px";
+          a.style.height = n.height + "px";
+          X.clearRect(0, 0, n.width, n.height);
+          X.drawImage(s, S.x, S.y, S.w, S.h, 0, 0, n.width, n.height);
+        }
+      } else i.classList.add("vjs-hidden");
+    };
+  },
+  thumbnails = function (e) {
+    this.ready(() => {
+      onPlayerReady(this, videojs.obj.merge(defaults, e));
+    });
+  },
+  registerPlugin = videojs.registerPlugin || videojs.plugin;
+registerPlugin("thumbnails", thumbnails);
+thumbnails.VERSION = "1.5";
+export default thumbnails;
