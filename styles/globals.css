@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.vjs-volume-level{
+  display: none !important;
+}

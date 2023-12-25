@@ -1,10 +1,9 @@
 import NextVideo from "@/components/nextvideo";
 
-export default function IndexPage() {
+export default async function Page() {
   return (
     <div>
       <NextVideo />
     </div>
-  )
-
+  );
 }
