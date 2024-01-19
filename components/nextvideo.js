@@ -1,108 +1,50 @@
-/* eslint-disable import/no-unused-modules */
-"use client"
-import { useCallback, useEffect, useState } from 'react';
-import videojs from 'video.js';
-import "../videojs/plugins/videojs-contrib-eme.min.js";
-import Hotkeys from "../videojs/plugins/videojs.hotkeys.min.js";
+"use client";
+import { useCallback, useEffect, useState } from "react";
+import videojs from "video.js";
+import "videojs-contrib-eme";
 
-const videoSource = {
-    techOrder: ['html5'],
-    autoplay: true,
-    controls: true,
-    sources: [
-        {
-            src: "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/manifest_v1.mpd",
-            type: "application/dash+xml"
-        }
-    ],
-    vttbasepath: "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/",
-    vttsrc: "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/sprite.vtt"
-}
+const Player = (props) => {
+  const [videoEl, setVideoEl] = useState(null);
+  const onVideo = useCallback((el) => {
+    setVideoEl(el);
+  }, []);
 
-export default function NextVideo(props) {
-    const [videoEl, setVideoEl] = useState(null)
+  useEffect(() => {
+    if (videoEl == null) {
+      return;
+    }
+    const player = videojs(videoEl);
+    
+    
+    player.eme();
+    player.src({
+      src: "https://travelxp.s.llnwi.net/watch1/6194d0164e2a9b451392cb3b/manifest_v1_hd_19052023_0908.mpd",
+      type: "application/dash+xml",
+      keySystems: {
+        "com.widevine.alpha": {
+          url: "https://c8eaeae1-drm-widevine-licensing.axprod.net/AcquireLicense",
+          licenseHeaders: {
+            "X-AxDRM-Message":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoxLCJjb21fa2V5X2lkIjoiYjQ1ODc2N2QtYTgzYi00MWQ0LWFlNjgtYWNhNzAwZDNkODRmIiwibWVzc2FnZSI6eyJ0eXBlIjoiZW50aXRsZW1lbnRfbWVzc2FnZSIsInZlcnNpb24iOjIsImxpY2Vuc2UiOnsiZXhwaXJhdGlvbl9kYXRldGltZSI6IjIwMjQtMDEtMjBUMTE6MDQ6MDIuMTUzKzAwOjAwIiwiYWxsb3dfcGVyc2lzdGVuY2UiOnRydWUsInJlYWxfdGltZV9leHBpcmF0aW9uIjp0cnVlfSwiY29udGVudF9rZXlfdXNhZ2VfcG9saWNpZXMiOlt7Im5hbWUiOiJQb2xpY3kgQSIsIndpZGV2aW5lIjp7ImRldmljZV9zZWN1cml0eV9sZXZlbCI6IlNXX1NFQ1VSRV9DUllQVE8ifX1dLCJjb250ZW50X2tleXNfc291cmNlIjp7ImlubGluZSI6W3siaWQiOiJjNDhiMGViMy1hNjIwLTBhZTUtZDQyYi1mMDEwYTk4NTYzNzYiLCJ1c2FnZV9wb2xpY3kiOiJQb2xpY3kgQSJ9LHsiaWQiOiI4NDM1MzcxMi04MDU3LWY1OTItMDE3ZS04NmYyMmFlNTdiODAiLCJ1c2FnZV9wb2xpY3kiOiJQb2xpY3kgQSJ9LHsiaWQiOiI5MDIyYmEwYy0xZmJlLTM0ZGItNGNiYy1lNmFhZTY5ZThiZjEiLCJ1c2FnZV9wb2xpY3kiOiJQb2xpY3kgQSJ9XX19fQ.HVEROLYnafSAl7G0_HxBKhIW2yB86PbxaCDOr7Z6aMs",
+          },
+          priority: 0,
+        },
+      },
+    });
 
-    const onVideo = useCallback((el) => {
-        setVideoEl(el)
-    }, [])
+    return () => {
+      player.dispose();
+    };
+  }, [props, videoEl]);
 
-    useEffect(() => {
+  return (
+    <>
+      <h1>The implementation below is using react functions</h1>
+      <div data-vjs-player>
+        <video ref={onVideo} className="video-js" playsInline />
+      </div>
+    </>
+  );
+};
 
-        if (videoEl == null) return
-
-        // videojs.skin("pinko");
-
-        const player = videojs(videoEl, videoSource)
-
-        require('../videojs/plugins/nuevo-dash');
-        require('../videojs/nuevo.min.js');
-        require('../videojs/plugins/videojs.events');
-        require('../videojs/plugins/videojs.thumbnails.js');
-        videojs.registerPlugin("hotkeys", Hotkeys);
-        
-        require('../videojs/plugins/videojs.thumbnails.js');
-        // require('../videojs/plugins/videojs-chromecast.min.js');
-
-        player.nuevo({
-            title: "video title", video_id: "video id", contextMenu: false,
-            slideImage : "https://travelxp.s.llnwi.net/watch1/6454f0d130502ab36242036d/v1/sprites/sprite_0.png",
-            slideType: 'horizontal', //optional
-            slideWidth: 160, //optional
-            slideHeight: 90, //optional
-            ghostThumb : true
-        });
-
-        
-        // Load VTT file on Nuevo plugin ready event
-        player.on('ready', function () {
-            
-            let track = [{ kind: 'metadata', src: videoSource.vttsrc }];
-            player.textTracks(track);
-        });
-
-        player.thumbnails({ basePath: videoSource.vttbasepath, src: videoSource.vttsrc });
-        // Initialize Events plugin
-        player.events({ analytics: true });
-
-        // Track events
-        player.on("track", (e, data) => {
-            switch (data.event) {
-                case 'firstPlay': console.log('First Play', data); break;
-                case '10%': console.log('Progress 10%', data); break;
-                case '25%': console.log('Progress 25%', data); break;
-                case '50%': console.log('Progress 50%', data); break;
-                case '75%': console.log('Progress 75%', data); break;
-                case '90%': console.log('Progress 90%', data); break;
-                case 'buffered': console.log('Video buffered', data); break;
-                case 'paused': console.log('Video paused', data); break;
-                case 'resume': console.log('Video resumed', data); break;
-                case 'replay': console.log('Video replayed', data); break;
-                case 'enterFullscreen': console.log('Video entered fullscreen', data); break;
-                case 'exitFullscreen': console.log('Video exited fullscreen', data); break;
-                case 'seek': console.log('Video seeked', data); break;
-                case 'mute': console.log('Video muted', data); break;
-                case 'unmute': console.log('Video unmuted', data); break;
-                case 'resolutionChange': console.log('Video resolution changed', data); break;
-                case 'ended': console.log('Video completed', data); break;
-                case 'summary': console.log('Video summary', data); break; // Fires only when video ended
-            }
-        });
-
-        // player.chromecast();
-        return () => {
-
-            player.dispose()
-        }
-    }, [props, videoEl])
-
-
-
-    return (
-        <>
-            <h1>The implementation below is using react functions</h1>
-            <div data-vjs-player>
-                <video ref={onVideo} className="video-js vjs-fluid" playsInline />
-            </div>
-        </>
-    )
-}
+export default Player;
