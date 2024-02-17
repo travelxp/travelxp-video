@@ -14,7 +14,7 @@ const Player = (props) => {
     if (videoEl == null) {
       return;
     }
-    require("../videojs/nuevo.min.js");
+    // require("../videojs/nuevo.min.js");
     if (videoEl !== null) {
       player = videojs(videoEl);
       let nuevoOptions = {
@@ -28,10 +28,10 @@ const Player = (props) => {
       };
       
 
-      player.on("nuevoReady", function () {
-        let track = { kind: "metadata", src: options.vttsrc };
-        player.loadTracks(track);
-      });
+      // player.on("nuevoReady", function () {
+      //   let track = { kind: "metadata", src: options.vttsrc };
+      //   player.loadTracks(track);
+      // });
 
       player.nuevo(nuevoOptions);
 
@@ -62,6 +62,7 @@ const Player = (props) => {
 
 
       // { mpd }
+
       // player.src({
       //   src: "https://travelxp.s.llnwi.net/watch1/5ffe96a0d051dccc770fe216/manifest_v2_hd_05102021_1047.mpd",
       //   type: "application/dash+xml",
